@@ -1,17 +1,16 @@
 import axios from 'axios';
-import type { Note, CreateNoteRequest } from '../types/note';
+import type {
+  Note,
+  CreateNoteRequest,
+  FetchNotesResponse,
+} from '../types/note';
 
-// Відповідь від бекенду для списку нотаток
-interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
-}
-
-// Параметри для запиту нотаток (пошук + пагінація)
+// Параметри для запиту нотаток (пошук + пагінація + тег)
 interface FetchNotesRequest {
   page?: number;
   perPage?: number;
   search?: string;
+  tag?: string; // фільтр за тегом
 }
 
 // Базовий URL та заголовки для всіх запитів
@@ -21,15 +20,16 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${
 }`;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
-// Отримати список нотаток (з пагінацією та пошуком)
 export async function fetchNotes({
   page = 1,
   perPage = 12,
   search = '',
+  tag,
 }: FetchNotesRequest): Promise<FetchNotesResponse> {
-  const { data } = await axios.get<FetchNotesResponse>('/notes', {
-    params: { page, perPage, search },
-  });
+  const params: Record<string, string | number> = { page, perPage, search };
+  if (tag && tag !== 'All') params.tag = tag;
+
+  const { data } = await axios.get<FetchNotesResponse>('/notes', { params });
   return data;
 }
 

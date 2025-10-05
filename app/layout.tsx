@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
-import TanstackProvider from '@/components/TanStackProvider/TanStackProvider';
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
@@ -18,14 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TanstackProvider>
+        <TanStackProvider>
           <Header />
           {children}
           <Footer />
 
           {/* Контейнер для модальних порталів */}
           <div id="modal-root"></div>
-        </TanstackProvider>
+        </TanStackProvider>
       </body>
     </html>
   );

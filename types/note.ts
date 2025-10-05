@@ -17,3 +17,9 @@ export interface CreateNoteRequest {
   content: string;
   tag: NoteTag;
 }
+
+// Відповідь від бекенду для списку нотаток
+export interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
