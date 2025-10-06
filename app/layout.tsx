@@ -12,20 +12,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+  modal, 
+}: {
   children: React.ReactNode;
-}>) {
+  modal: React.ReactNode;
+}) {
+
   return (
     <html lang="en">
       <body>
         <TanStackProvider>
           <Header />
-          {children}
+          <main>
+            {children}
+            {modal} 
+          </main>
           <Footer />
-
-          {/* Контейнер для модальних порталів */}
-          <div id="modal-root"></div>
         </TanStackProvider>
+        <div id="modal-root" />
       </body>
     </html>
   );

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
 import { fetchNotes } from '@/lib/api';
-import type { FetchNotesResponse } from '@/types/note';
+// import type { FetchNotesResponse } from '@/types/note';
 
 import NoteList from '@/components/NoteList/NoteList';
 import SearchBox from '@/components/SearchBox/SearchBox';
@@ -30,15 +30,13 @@ export default function NotesClient({ tag }: NotesClientProps) {
     setPage(1);
   }, 500);
 
-  const { data, isLoading, error } = useQuery<FetchNotesResponse>({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['notes', page, search, tag],
     queryFn: () => fetchNotes({ page, perPage, search, tag }),
-    keepPreviousData: true,
   });
 
-  if (error) {
+  if (error)
     return <p>Could not fetch the list of notes. {(error as Error).message}</p>;
-  }
 
   const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 1;

@@ -7,14 +7,12 @@ import { fetchNotes } from '@/lib/api';
 import NotesClient from './Notes.client';
 
 interface Props {
-  params: { slug?: string[] }; // catch-all маршрут
-  children?: React.ReactNode; // для @sidebar
+  params: Promise<{ slug?: string[] }>;
 }
 
-export default async function NotesPage({ params, children }: Props) {
-  const rawTag = params.slug?.[0];
-  // Якщо "All" або undefined — не передаємо тег у API
-  const tag = rawTag && rawTag !== 'All' ? rawTag : undefined;
+export default async function NotesPage({ params }: Props) {
+  const { slug } = await params;
+  const tag = slug?.[0] || 'All'; // дефолт — 'All'
 
   const queryClient = new QueryClient();
 
@@ -24,11 +22,8 @@ export default async function NotesPage({ params, children }: Props) {
   });
 
   return (
-    <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <NotesClient tag={tag} />
-      </HydrationBoundary>
-      {children} {/* Next.js вставляє @sidebar сюди */}
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <NotesClient tag={tag} />
+    </HydrationBoundary>
   );
 }

@@ -27,7 +27,11 @@ export async function fetchNotes({
   tag,
 }: FetchNotesRequest): Promise<FetchNotesResponse> {
   const params: Record<string, string | number> = { page, perPage, search };
-  if (tag && tag !== 'All') params.tag = tag;
+
+  // Якщо tag === 'all' або undefined, не передаємо його у запит
+  if (tag && tag.toLowerCase() !== 'all') {
+    params.tag = tag;
+  }
 
   const { data } = await axios.get<FetchNotesResponse>('/notes', { params });
   return data;
