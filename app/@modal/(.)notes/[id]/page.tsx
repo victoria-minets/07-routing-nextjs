@@ -55,9 +55,49 @@
 //   );
 // }
 
-import Modal from '@/components/Modal/Modal';
+// другий робочий варіант
+
+// import Modal from '@/components/Modal/Modal';
+// import { fetchNoteById } from '@/lib/api';
+// import css from './NotePreview.module.css';
+
+// interface Props {
+//   params: Promise<{ id: string }>;
+// }
+
+// export default async function NotePreview({ params }: Props) {
+//   const { id } = await params;
+//   const note = await fetchNoteById(id);
+
+//   if (!note) {
+//     return (
+//       <Modal>
+//         <p className={css.error}>Note not found</p>
+//       </Modal>
+//     );
+//   }
+
+//   return (
+//     <Modal>
+//       <div className={css.container}>
+//         <div className={css.item}>
+//           <header className={css.header}>
+//             <h2>{note.title}</h2>
+//             <span className={css.date}>
+//               {new Date(note.createdAt).toLocaleDateString()}
+//             </span>
+//           </header>
+//           <p className={css.content}>{note.content}</p>
+//           <span className={css.tag}>{note.tag}</span>
+//         </div>
+//       </div>
+//     </Modal>
+//   );
+// }
+
+import NotePreviewClient from './NotePreview.client';
 import { fetchNoteById } from '@/lib/api';
-import css from './NotePreview.module.css';
+import type { Note } from '@/types/note';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -65,30 +105,11 @@ interface Props {
 
 export default async function NotePreview({ params }: Props) {
   const { id } = await params;
-  const note = await fetchNoteById(id);
+  const note: Note | null = await fetchNoteById(id);
 
   if (!note) {
-    return (
-      <Modal>
-        <p className={css.error}>Note not found</p>
-      </Modal>
-    );
+    return <p>Note not found</p>;
   }
 
-  return (
-    <Modal>
-      <div className={css.container}>
-        <div className={css.item}>
-          <header className={css.header}>
-            <h2>{note.title}</h2>
-            <span className={css.date}>
-              {new Date(note.createdAt).toLocaleDateString()}
-            </span>
-          </header>
-          <p className={css.content}>{note.content}</p>
-          <span className={css.tag}>{note.tag}</span>
-        </div>
-      </div>
-    </Modal>
-  );
+  return <NotePreviewClient note={note} />;
 }
