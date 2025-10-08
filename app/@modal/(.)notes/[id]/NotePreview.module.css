@@ -7,6 +7,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+
 .item {
     display: flex;
     flex-direction: column;
@@ -65,11 +66,4 @@
     text-decoration: underline;
     display: inline-block;
     background-color: transparent;
-}
-
-.loading,
-.error {
-    font-size: 16px;
-    text-align: center;
-    color: #666;
 }
